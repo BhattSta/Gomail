@@ -10,7 +10,6 @@ const register = async (req, res) => {
             return res.status(409).send({ message: "Email Already Exists" });
         } else {
             const password = req.body.password;
-            // const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, 10);
             req.body.password = hashedPassword;
             const data = delete req.body.confirmpassword;

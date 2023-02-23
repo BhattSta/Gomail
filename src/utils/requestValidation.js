@@ -20,8 +20,6 @@ function validateRequest(req, res, next, schema, type = 'body') {
   }
 
   if (errorData) {
-    // console.log(errorData);
-    // return res.status(406).send(setRes(resCode.NotActive, null, true, errorData.details[0].message));
     return res.status(404).send(errorData.details);
   } else {
     req.body = valueData;
