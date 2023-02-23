@@ -30,7 +30,7 @@ const login = async (req, res) => {
         const user = await Users.findOne({ email: email });
 
         if (!user) {
-            return res.status(404).send({ message: "Invalid Email" });
+            return res.status(404).send({ message: `The email you're trying is not Registered` });
         }
 
         const isPasswordMatch = await bcrypt.compare(password, user.password);
