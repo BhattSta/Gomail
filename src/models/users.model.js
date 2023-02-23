@@ -2,26 +2,26 @@ const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema(
     {
-        name : {
-            type : String,
-            required : true,
+        name: {
+            type: String,
+            required: true,
         },
-        mobile : {
-            type : Number,
-            required : true
+        mobile: {
+            type: Number,
+            required: true
         },
-        role : {
-            type : String,
-            enum : ['user', 'admin'],
-            default : 'user'
+        role: {
+            type: String,
+            enum: ['user', 'admin'],
+            default: 'user'
         },
-        email : {
-            type : String,
-            required : true,
+        email: {
+            type: String,
+            required: true,
         },
-        password : {
-            type : String,
-            required : true,
+        password: {
+            type: String,
+            required: true,
         },
         // tokens : [{
         //     token : {
@@ -31,7 +31,7 @@ const userSchema = mongoose.Schema(
         // }],
     },
     {
-        timestamps : true,
+        timestamps: true,
     }
 );
 

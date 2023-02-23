@@ -1,11 +1,10 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+const routes = require('./routes/index')
 
-// parse json request body
 app.use(express.json());
 
-// parse urlencoded request body
-// app.use(express.urlencoded({ extended: false }));
+app.use('/v1', routes);
 
 module.exports = app;
