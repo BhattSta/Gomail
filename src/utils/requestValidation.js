@@ -20,7 +20,7 @@ function validateRequest(req, res, next, schema, type = 'body') {
   }
 
   if (errorData) {
-    return res.status(404).send(errorData.details);
+    return res.status(402).send(errorData.details[0].message);
   } else {
     req.body = valueData;
     next();

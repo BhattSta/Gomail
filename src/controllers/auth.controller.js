@@ -7,7 +7,7 @@ const register = async (req, res) => {
         const email = req.body.email;
         const existingUser = await Users.findOne({ email: email });
         if (existingUser) {
-            return res.status(409).send({ message: "Email Already Exists" });
+            return res.status(401).send({ message: "Email Already Exists" });
         } else {
             const password = req.body.password;
             const hashedPassword = await bcrypt.hash(password, 10);
@@ -15,10 +15,10 @@ const register = async (req, res) => {
             const data = delete req.body.confirmpassword;
             const user = new Users(req.body);
             const createUser = await user.save();
-            res.status(201).send(createUser);
+            res.status(200).send(createUser);
         }
     } catch (e) {
-        res.status(404).send(e);
+        res.status(402).send(e);
     }
 }
 
@@ -29,20 +29,20 @@ const login = async (req, res) => {
         const user = await Users.findOne({ email: email });
 
         if (!user) {
-            return res.status(404).send({ message: `The email you're trying is not Registered` });
+            return res.status(402).send({ message: `The email you're trying is not Registered` });
         }
 
         const isPasswordMatch = await bcrypt.compare(password, user.password);
 
         if (!isPasswordMatch) {
-            return res.status(404).send({ message: "Invalid Password" });
+            return res.status(401).send({ message: "Invalid Password" });
         }
 
         const token = jwt.sign({
             userId: user._id,
             userEmail: user.email,
         }, process.env.SECRET_KEY);
-        res.status(201).json({
+        res.status(200).json({
             userId: user._id,
             userName: user.name,
             userEmail: user.email,

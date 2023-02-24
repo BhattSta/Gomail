@@ -8,9 +8,6 @@ const routes = require('./routes/index')
 // parse json request body
 app.use(express.json());
 
-// parse urlencoded request body
-app.use(express.urlencoded({ extended: false }));
-
 // enable cors
 app.use(cors());
 app.options('*', cors());
