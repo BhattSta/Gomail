@@ -2,7 +2,6 @@ const Joi = require('joi');
 const validateRequest = require('../utils/requestValidation');
 
 async function sendingMailValidation(req, res, next) {
-    // console.log(req.body);
     const mails = {
         from: Joi
             .string()

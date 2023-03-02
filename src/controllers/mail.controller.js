@@ -1,15 +1,5 @@
 const { Mails } = require('../models')
 
-// const sendMail = async(req, res) => {
-//     try{
-//         const mail = new Mails(req.body);
-//         const attachments = [];
-//     console.log(req.body);
-//     }catch(err){
-
-//     }
-// }
-
 const sendMail = async (req, res) => {
     try {
         const mail = new Mails(req.body);
@@ -28,7 +18,7 @@ const sendMail = async (req, res) => {
         }
 
         mail.attachments = attachments;
-        
+
         const sendMails = await mail.save();
         res.status(200).send(sendMails);
     } catch (err) {

@@ -2,35 +2,34 @@ const mongoose = require('mongoose');
 
 const mailSchema = mongoose.Schema(
     {
-        from : {
-            type : mongoose.Schema.Types.ObjectId,
-            ref : 'User'
+        from: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
         },
-        to : {
-            type : mongoose.Schema.Types.ObjectId,
-            ref : 'User'
+        to: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
         },
         subject: {
-            type : String,
+            type: String,
         },
         message: {
-            type : String
+            type: String
         },
         attachments: {
-            type : Array,
+            type: Array,
         },
-        status : {
-            type : String,
-            // default : "unread"
-            enum : ["unread", "read"],
+        status: {
+            type: String,
+            enum: ["unread", "read"],
         },
-        counter : {
-            type : Number,
-            default : 0
+        counter: {
+            type: Number,
+            default: 0
         },
-        isDeleted : {
-            type : Boolean,
-            default : false
+        isDeleted: {
+            type: Boolean,
+            default: false
         }
     },
     {
