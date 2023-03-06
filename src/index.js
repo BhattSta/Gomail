@@ -8,7 +8,7 @@ app.get('/', (req, res) => {
     res.send('Welcome To Home Page');
 });
 
-app.get('*', () => {
+app.get('*', (req, res) => {
     res.send('Page Not Found');
 });
 

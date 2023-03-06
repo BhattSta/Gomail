@@ -26,7 +26,24 @@ const sendMail = async (req, res) => {
     }
 };
 
+const getMail = async (req, res) => {
+    try {
+
+        const mailData = await Mails.find().populate({
+            path: 'from',
+            select: ["name", "email"],
+        }).populate({
+            path: 'to',
+            select: ["name", "email"],
+        });
+        res.status(201).send(mailData);
+    }
+    catch (err) {
+        res.status(402).send(err);
+    }
+}
 
 module.exports = {
     sendMail,
+    getMail
 }
