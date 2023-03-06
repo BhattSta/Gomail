@@ -6,7 +6,7 @@ const { mailController } = require('../controllers');
 const multer = require('multer');
 const path = require('path');
 
-var imagePath = path.join(__dirname, '../public/');
+var imagePath = path.join(__dirname, '../public/attachments');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
