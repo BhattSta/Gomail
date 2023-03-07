@@ -28,7 +28,7 @@ async function registerValidation(req, res, next) {
       .email()
       .required()
       .lowercase()
-      .pattern(/^[a-zA-Z0-9]+@(gomail\.com)$/, "validation as suffix it should be @gomail.com only in"),
+      .pattern(/^[a-zA-Z0-9]+@(gomail\.com)$/, "validation, the suffix should be @gomail.com only in"),
 
     password: Joi
       .string()
