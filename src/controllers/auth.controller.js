@@ -1,58 +1,79 @@
 const { Users } = require('../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const httpStatus = require('http-status');
 
 const register = async (req, res) => {
     try {
-        console.log(req.body);
-        const email = req.body.email;
+        let { name, mobile, role, email, password } = req.body;
         const existingUser = await Users.findOne({ email: email });
-        if (existingUser) {
-            return res.status(401).send({ message: "Email Already Exists" });
-        } else {
-            const password = req.body.password;
+        if (!existingUser) {
             const hashedPassword = await bcrypt.hash(password, 10);
-            req.body.password = hashedPassword;
-            const data = delete req.body.confirmpassword;
-            const user = new Users(req.body);
+            password = hashedPassword;
+            const data = { name, mobile, role, email, password }
+            const user = new Users(data);
             const createUser = await user.save();
-            res.status(200).send(createUser);
+            return res
+                .status(httpStatus.CREATED)
+                .json({
+                    message: "User Registration Process Done Successfully "
+                });
+        } else {
+            return res
+                .status(httpStatus.CONFLICT)
+                .json({
+                    message: "Email Already Exists"
+                });
         }
     } catch (e) {
-        res.status(402).send(e);
+        return res.status(httpStatus.NOT_FOUND);
     }
-}
+};
 
 const login = async (req, res) => {
     try {
-        const email = req.body.email;
-        const password = req.body.password;
+        let { email, password } = req.body;
         const user = await Users.findOne({ email: email });
 
         if (!user) {
-            return res.status(402).send({ message: `The email you're trying is not Registered` });
+            return res
+                .status(httpStatus.UNAUTHORIZED)
+                .json({
+                    message: "The email you're trying is not Registered"
+                });
         }
 
         const isPasswordMatch = await bcrypt.compare(password, user.password);
 
         if (!isPasswordMatch) {
-            return res.status(401).send({ message: "Invalid Password" });
+            return res
+                .status(httpStatus.UNAUTHORIZED)
+                .json({
+                    message: "Invalid Password"
+                });
         }
 
         const token = jwt.sign({
             userId: user._id,
             userEmail: user.email,
         }, process.env.SECRET_KEY);
-        res.status(200).json({
-            userId: user._id,
-            userName: user.name,
-            userEmail: user.email,
-            token: token
-        });
+
+        return res
+            .status(httpStatus.OK)
+            .json({
+                userId: user._id,
+                userName: user.name,
+                userEmail: user.email,
+                token: token
+            });
     } catch (e) {
-        res.status(500).send({ message: "Internal server error" });
+        return res
+            .status(httpStatus.INTERNAL_SERVER_ERROR)
+            .json({
+                message: "Internal server error"
+            });
     }
-}
+};
 
 module.exports = {
     register,
