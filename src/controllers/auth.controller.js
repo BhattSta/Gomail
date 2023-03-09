@@ -13,20 +13,12 @@ const register = async (req, res) => {
             const data = { name, mobile, role, email, password }
             const user = new Users(data);
             const createUser = await user.save();
-            return res
-                .status(httpStatus.CREATED)
-                .json({
-                    message: "User Registration Process Done Successfully "
-                });
+            return res.status(httpStatus.CREATED).json({ message: "User Registration Process Done Successfully " });
         } else {
-            return res
-                .status(httpStatus.CONFLICT)
-                .json({
-                    message: "Email Already Exists"
-                });
+            return res.status(httpStatus.CONFLICT).json({ message: "Email Already Exists" });
         }
-    } catch (e) {
-        return res.status(httpStatus.NOT_FOUND);
+    } catch (err) {
+        return res.status(httpStatus.NOT_FOUND).json({ message: err });
     }
 };
 
@@ -36,21 +28,13 @@ const login = async (req, res) => {
         const user = await Users.findOne({ email: email });
 
         if (!user) {
-            return res
-                .status(httpStatus.UNAUTHORIZED)
-                .json({
-                    message: "The email you're trying is not Registered"
-                });
+            return res.status(httpStatus.UNAUTHORIZED).json({ message: "The email you're trying is not Registered" });
         }
 
         const isPasswordMatch = await bcrypt.compare(password, user.password);
 
         if (!isPasswordMatch) {
-            return res
-                .status(httpStatus.UNAUTHORIZED)
-                .json({
-                    message: "Invalid Password"
-                });
+            return res.status(httpStatus.UNAUTHORIZED).json({ message: "Invalid Password" });
         }
 
         const token = jwt.sign({
@@ -58,20 +42,14 @@ const login = async (req, res) => {
             userEmail: user.email,
         }, process.env.SECRET_KEY);
 
-        return res
-            .status(httpStatus.OK)
-            .json({
-                userId: user._id,
-                userName: user.name,
-                userEmail: user.email,
-                token: token
-            });
-    } catch (e) {
-        return res
-            .status(httpStatus.INTERNAL_SERVER_ERROR)
-            .json({
-                message: "Internal server error"
-            });
+        return res.status(httpStatus.OK).json({
+            userId: user._id,
+            userName: user.name,
+            userEmail: user.email,
+            token: token
+        });
+    } catch (err) {
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: "Internal server error" });
     }
 };
 

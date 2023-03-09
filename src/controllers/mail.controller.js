@@ -1,5 +1,5 @@
-const { Mails } = require('../models');
 const { Users } = require('../models');
+const { Mails } = require('../models');
 const httpStatus = require('http-status');
 
 const checkToUserEmail = async (req, res) => {
@@ -7,24 +7,12 @@ const checkToUserEmail = async (req, res) => {
         const email = req.body.email;
         const validEmail = await Users.findOne({ email: email });
         if (validEmail) {
-            return res
-                .status(httpStatus.OK)
-                .json({
-                    message: "Email Found"
-                });
+            return res.status(httpStatus.OK).json({ message: "Email Found" });
         } else {
-            return res
-                .status(httpStatus.UNAUTHORIZED)
-                .json({
-                    message: "The Email Entered In To Field Is Not Registered"
-                });
+            return res.status(httpStatus.UNAUTHORIZED).json({ message: "The Email Entered In To Field Is Not Registered" });
         }
     } catch (err) {
-        return res
-            .status(httpStatus.NOT_FOUND)
-            .json({
-                "Error": err
-            });
+        return res.status(httpStatus.NOT_FOUND).json({ "Error": err });
     }
 };
 
@@ -52,24 +40,12 @@ const sendMail = async (req, res) => {
             const data = { from, to, subject, message, attachments }
             const mail = new Mails(data);
             const sendMails = await mail.save();
-            return res
-                .status(httpStatus.OK)
-                .json({
-                    message: "Mail has been sent successfully"
-                });
+            return res.status(httpStatus.OK).json({ message: "Mail has been sent successfully" });
         } else {
-            return res
-                .status(httpStatus.UNAUTHORIZED)
-                .json({
-                    message: "The Email Entered In To Field Is Not Registered"
-                });
+            return res.status(httpStatus.UNAUTHORIZED).json({ message: "The Email Entered In To Field Is Not Registered" });
         }
     } catch (err) {
-        return res
-            .status(httpStatus.NOT_FOUND)
-            .json({
-                "Error": err
-            });
+        return res.status(httpStatus.NOT_FOUND).json({ "Error": err });
     }
 };
 
@@ -82,18 +58,10 @@ const getMail = async (req, res) => {
             path: 'to',
             select: ["name", "email"],
         });
-        return res
-            .status(httpStatus.OK)
-            .json({
-                "MailData ": mailData
-            });
+        return res.status(httpStatus.OK).json({ "MailData ": mailData });
     }
     catch (err) {
-        return res
-            .status(httpStatus.NOT_FOUND)
-            .json({
-                "Error": err
-            });
+        return res.status(httpStatus.NOT_FOUND).json({ "Error": err });
     }
 };
 
